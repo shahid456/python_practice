@@ -1,0 +1,10 @@
+M=int(input())
+m=list(map(int,input().rsplit()))
+N=int(input())
+n=list(map(int,input().rsplit()))
+n=set(n)
+m=set(m)
+n.symmetric_difference_update(m)
+n=sorted(n)
+for x in n:
+    print(x)

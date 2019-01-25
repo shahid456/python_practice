@@ -1,33 +1,20 @@
 class Node:
     def __init__(self, info):
-        self.info = info
+        self.data = info
         self.left = None
         self.right = None
         self.level = None
 
     def __str__(self):
-        return str(self.info)
+        return str(self.data)
 def inOrder(root):
     if root==None:
         return
     inOrder(root.left)
-    print(root.info, end=" ")
+    print(root.data, end=" ")
     inOrder(root.right)
 
 
-def preOrder(root):
-    if root == None:
-        return
-    print(root.info, end=" ")
-    preOrder(root.left)
-    preOrder(root.right)
-
-def postOrder(root):
-    if root==None:
-        return
-    postOrder(root.left)
-    postOrder(root.right)
-    print(root.info,end=" ")
 class BinarySearchTree:
     def __init__(self):
         self.root = None
@@ -48,16 +35,46 @@ class BinarySearchTree:
 
             while temp!=None:
                 temp1=temp
-                if temp.info>val:
+                if temp.data>val:
                     temp=temp.left
                 else:
                     temp=temp.right
-            if val>temp1.info:
+            if val>temp1.data:
                 temp1.right=new_node
             else:
                 temp1.left=new_node
             return self.root
 
+
+def check_binary_search_tree_(root):
+    return recur(root)[0]
+
+
+def recur(root):
+    mini = root.data
+    maxi = root.data
+    if root.left != None:
+        if root.data <= root.left.data:
+            return False, None, None
+        f, fmin, fmax = recur(root.left)
+        if not f:
+            return False, None, None
+        if mini <= fmax:
+            return False, None, None
+        mini = fmin
+    if root.right != None:
+        if root.data >= root.right.data:
+            return False, None, None
+        g, gmin, gmax = recur(root.right)
+        if not g:
+            return False, None, None
+        if maxi >= gmin:
+            return False, None, None
+        maxi = gmax
+    return True, mini, maxi
+
+    g, gmin, gmax = check_binary_search_tree_(root.right)
+    return g & f & e, min(mini, fmin, gmin), max(maxi, fmax, gmax)
 # Enter you code here.
 
 tree = BinarySearchTree()
@@ -68,6 +85,6 @@ arr = list(map(int, input().split()))
 
 for i in range(t):
     tree.insert(arr[i])
+tree.root.left.data=9
 inOrder(tree.root)
-preOrder(tree.root)
-postOrder(tree.root)
+print(check_binary_search_tree_(tree.root))
